@@ -107,4 +107,5 @@ button_gerar_qrcode.pack(pady=(30,10))
 label_assinatura = Label(janela, text="Dev by: SLUK06", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 9,"bold"))
 label_assinatura.pack()
 
+
 janela.mainloop()
