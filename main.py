@@ -89,7 +89,7 @@ label_nome_coluna_link.pack(pady=(20,0))
 entry_nome_coluna_link = Entry(janela)
 entry_nome_coluna_link.pack()
 
-label_nome_coluna_texto = Label(janela, text="Nome da Coluna do Texto (TAG):", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
+label_nome_coluna_texto = Label(janela, text="Nome da Coluna do Texto:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
 label_nome_coluna_texto.pack(pady=(20,0))
 entry_nome_coluna_texto = Entry(janela)
 entry_nome_coluna_texto.pack()
