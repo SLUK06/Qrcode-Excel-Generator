@@ -9,7 +9,6 @@ QR Code Generator is a Python application that generates QR codes based on links
 - Select an Excel file containing links and corresponding text.
 - Specify the worksheet, column names for links and text, and destination folder.
 - Generate QR codes for each link-text pair.
-- Customizable QR code settings such as version, error correction, box size, and border.
 - QR codes are saved as PNG files with filenames prefixed by "QRCODE-" in the destination folder.
 - User-friendly interface with input validation and error handling.
 
