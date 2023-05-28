@@ -4,7 +4,7 @@ import os
 from tkinter import *
 from tkinter import filedialog, messagebox
 
-def criar_qrcode(link, texto, nome_arquivo):
+def create_qrcode(link, text, name_archive):
     qr = qrcode.QRCode(
         version=8,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -16,96 +16,96 @@ def criar_qrcode(link, texto, nome_arquivo):
 
     cor_hexadecimal = "#F2EC00"
     imagem_qrcode = qr.make_image(fill_color="black", back_color=cor_hexadecimal)
-    nome_arquivo_qrcode = f"{nome_arquivo}.png"
-    imagem_qrcode.save(nome_arquivo_qrcode)
+    name_archive_qrcode = f"{name_archive}.png"
+    imagem_qrcode.save(name_archive_qrcode)
 
-    return nome_arquivo_qrcode
+    return name_archive_qrcode
 
-def selecionar_pasta_excel():
-    pasta_excel = filedialog.askopenfilename(filetypes=[("Arquivos Excel", "*.xlsx")])
-    entry_pasta_excel.delete(0, END)
-    entry_pasta_excel.insert(END, pasta_excel)
+def select_folder_excel():
+    folder_excel = filedialog.askopenfilename(filetypes=[("archives Excel", "*.xlsx")])
+    entry_folder_excel.delete(0, END)
+    entry_folder_excel.insert(END, folder_excel)
 
-def selecionar_pasta_destino():
-    pasta_destino = filedialog.askdirectory()
-    entry_pasta_destino.delete(0, END)
-    entry_pasta_destino.insert(END, pasta_destino)
+def select_folder_destination():
+    folder_destination = filedialog.askdirectory()
+    entry_folder_destination.delete(0, END)
+    entry_folder_destination.insert(END, folder_destination)
 
-def gerar_qrcode():
-    pasta_excel = entry_pasta_excel.get()
-    nome_planilha = entry_nome_planilha.get()
-    nome_coluna_link = entry_nome_coluna_link.get()
-    nome_coluna_texto = entry_nome_coluna_texto.get()
-    pasta_destino = entry_pasta_destino.get()
+def generate_qrcode():
+    folder_excel = entry_folder_excel.get()
+    name_worksheet = entry_name_worksheet.get()
+    name_column_link = entry_name_column_link.get()
+    name_column_text = entry_name_column_text.get()
+    folder_destination = entry_folder_destination.get()
 
-    if not pasta_excel or not nome_planilha or not nome_coluna_link or not nome_coluna_texto or not pasta_destino:
+    if not folder_excel or not name_worksheet or not name_column_link or not name_column_text or not folder_destination:
         messagebox.showwarning("warning", "Please fill in all fields.")
         return
 
-    if not os.path.isfile(pasta_excel):
+    if not os.path.isfile(folder_excel):
         messagebox.showerror("Error", "Excel file not found.")
         return
 
     try:
-        workbook = load_workbook(filename=pasta_excel)
-        planilha = workbook[nome_planilha]
-        coluna_links = planilha[nome_coluna_link]
-        coluna_texto = planilha[nome_coluna_texto]
+        workbook = load_workbook(filename=folder_excel)
+        worksheet = workbook[name_worksheet]
+        column_links = worksheet[name_column_link]
+        column_text = worksheet[name_column_text]
 
-        qrcodes_gerados = []  # Lista para armazenar os nomes dos QR codes gerados
+        qrcodes_generated = []  
 
-        for celula_link, celula_texto in zip(coluna_links[1:], coluna_texto[1:]):
+        for celula_link, celula_text in zip(column_links[1:], column_text[1:]):
             link = celula_link.value
-            texto = celula_texto.value
-            nome_arquivo_qrcode = os.path.join(pasta_destino, f"QRCODE-{texto}")
-            nome_arquivo_gerado = criar_qrcode(link, texto, nome_arquivo_qrcode)
-            qrcodes_gerados.append(nome_arquivo_gerado)
+            text = celula_text.value
+            name_archive_qrcode = os.path.join(folder_destination, f"QRCODE-{text}")
+            name_archive_generated = create_qrcode(link, text, name_archive_qrcode)
+            qrcodes_generated.append(name_archive_generated)
 
-        if qrcodes_gerados:
+        if qrcodes_generated:
             messagebox.showinfo("Success", "QR codes successfully generated!")
     except Exception as e:
         messagebox.showerror("Error", str(e))
         return
 
-janela = Tk()
-janela.title("QR Code Generator")
-janela.geometry("400x500")
-janela.configure(bg="#D31145")
+window = Tk()
+window.title("QR Code Generator")
+window.geometry("400x500")
+window.configure(bg="#D31145")
 
-label_pasta_excel = Label(janela, text="Excel file:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
-label_pasta_excel.pack(pady=(10,0))
-entry_pasta_excel = Entry(janela)
-entry_pasta_excel.pack()
-button_selecionar_pasta_excel = Button(janela, text="Select Folder", font=("KelloggsSansMedium", 10,"bold"), command=selecionar_pasta_excel)
-button_selecionar_pasta_excel.pack(pady=5)
+label_folder_excel = Label(window, text="Excel file:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
+label_folder_excel.pack(pady=(10,0))
+entry_folder_excel = Entry(window)
+entry_folder_excel.pack()
+button_select_folder_excel = Button(window, text="Select Folder", font=("KelloggsSansMedium", 10,"bold"), command=select_folder_excel)
+button_select_folder_excel.pack(pady=5)
 
-label_nome_planilha = Label(janela, text="Sheet Name:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
-label_nome_planilha.pack(pady=(20,0))
-entry_nome_planilha = Entry(janela)
-entry_nome_planilha.pack()
+label_name_worksheet = Label(window, text="Sheet Name:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
+label_name_worksheet.pack(pady=(20,0))
+entry_name_worksheet = Entry(window)
+entry_name_worksheet.pack()
 
-label_nome_coluna_link = Label(janela, text="Column with the Links:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
-label_nome_coluna_link.pack(pady=(20,0))
-entry_nome_coluna_link = Entry(janela)
-entry_nome_coluna_link.pack()
+label_name_column_link = Label(window, text="Column with the Links:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
+label_name_column_link.pack(pady=(20,0))
+entry_name_column_link = Entry(window)
+entry_name_column_link.pack()
 
-label_nome_coluna_texto = Label(janela, text="Text Column:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
-label_nome_coluna_texto.pack(pady=(20,0))
-entry_nome_coluna_texto = Entry(janela)
-entry_nome_coluna_texto.pack()
+label_name_column_text = Label(window, text="Text Column:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
+label_name_column_text.pack(pady=(20,0))
+entry_name_column_text = Entry(window)
+entry_name_column_text.pack()
 
-label_pasta_destino = Label(janela, text="Destination Folder:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
-label_pasta_destino.pack(pady=(20,0))
-entry_pasta_destino = Entry(janela)
-entry_pasta_destino.pack()
-button_selecionar_pasta_destino = Button(janela, text="Select Folder", font=("KelloggsSansMedium", 10,"bold"), command=selecionar_pasta_destino)
-button_selecionar_pasta_destino.pack(pady=5)
+label_folder_destination = Label(window, text="Destination Folder:", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 15,"bold"))
+label_folder_destination.pack(pady=(20,0))
+entry_folder_destination = Entry(window)
+entry_folder_destination.pack()
+button_select_folder_destination = Button(window, text="Select Folder", font=("KelloggsSansMedium", 10,"bold"), command=select_folder_destination)
+button_select_folder_destination.pack(pady=5)
 
-button_gerar_qrcode = Button(janela, text="Generate QR Codes", font=("KelloggsSansMedium", 10,"bold"), command=gerar_qrcode, width=20)
-button_gerar_qrcode.pack(pady=(30,10))
+button_generate_qrcode = Button(window, text="Generate QR Codes", font=("KelloggsSansMedium", 10,"bold"), command=generate_qrcode, width=20)
+button_generate_qrcode.pack(pady=(30,10))
 
-label_assinatura = Label(janela, text="Dev by: SLUK06", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 9,"bold"))
-label_assinatura.pack()
+label_signature = Label(window, text="Dev by: SLUK06", bg="#D31145", fg="#FFFFFF", font=("KelloggsSansMedium", 9,"bold"))
+label_signature.pack()
 
 
-janela.mainloop()
+window.mainloop()
